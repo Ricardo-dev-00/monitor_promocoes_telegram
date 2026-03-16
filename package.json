@@ -8,7 +8,7 @@
     "start": "cd src && npm run start",
     "start:dev": "cd src && npm run start:dev",
     "build": "cd src && npm run build",
-    "start:prod": "node src/dist/main"
+    "start:prod": "node src/dist/src/main.js"
   },
   "keywords": [],
   "author": "",
