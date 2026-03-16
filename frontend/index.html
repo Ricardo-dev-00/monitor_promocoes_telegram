@@ -105,6 +105,8 @@
               `;
               document.body.appendChild(modal);
               document.getElementById('btnVoltarLogout').addEventListener('click', function() {
+                sessionStorage.removeItem('logoutTelegram');
+                localStorage.removeItem('telegramUser');
                 window.location.href = 'index.html';
               });
             }
