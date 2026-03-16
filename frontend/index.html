@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Monitora Promoções</title>
+  <title>Monitora Promoï¿½ï¿½es</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100">
@@ -22,12 +22,12 @@
           </svg>
         </span>
       </div>
-      <h1 class="text-4xl font-extrabold text-blue-700 mb-2 text-center drop-shadow">Monitora Promoções</h1>
-      <p class="text-gray-600 mb-6 text-center text-lg">Receba alertas automáticos de promoções nos grupos do Telegram.<br>Simples, seguro e eficiente!</p>
+      <h1 class="text-4xl font-extrabold text-blue-700 mb-2 text-center drop-shadow">Monitora Promoï¿½ï¿½es</h1>
+      <p class="text-gray-600 mb-6 text-center text-lg">Receba alertas automï¿½ticos de promoï¿½ï¿½es nos grupos do Telegram.<br>Simples, seguro e eficiente!</p>
       <button id="btnEntrar" class="bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold px-6 py-3 rounded-lg shadow hover:scale-105 transition-transform duration-200 mb-4">Entrar com Telegram</button>
       <div class="w-full border-t border-gray-200 my-6"></div>
       <ul class="text-gray-500 text-sm mb-2 list-disc pl-5">
-        <li>Monitoramento automático de promoções</li>
+        <li>Monitoramento automï¿½tico de promoï¿½ï¿½es</li>
         <li>Login seguro via Telegram</li>
         <li>Interface intuitiva e responsiva</li>
       </ul>
@@ -45,12 +45,12 @@
           </span>
         </div>
         <h2 class="text-2xl font-extrabold text-blue-700 mb-2">Entrar com Telegram</h2>
-        <p class="text-gray-600 mb-6">Autentique-se com segurança e receba alertas de promoções!</p>
+        <p class="text-gray-600 mb-6">Autentique-se com seguranï¿½a e receba alertas de promoï¿½ï¿½es!</p>
 
-        <!-- Foto de perfil centralizada (preenchida após login) -->
+        <!-- Foto de perfil centralizada (preenchida apï¿½s login) -->
         <div id="telegramProfilePic" class="flex justify-center mb-4"></div>
 
-        <!-- Widget Telegram e botão de logout -->
+        <!-- Widget Telegram e botï¿½o de logout -->
         <div id="telegramButtons" class="flex flex-col items-center w-full">
           <script async src="https://telegram.org/js/telegram-widget.js?7"
             data-telegram-login="MonitoraPromocoesBot"
@@ -80,8 +80,14 @@
   </style>
 
   <script>
-    // Callback do widget Telegram — deve ser global
+    // Callback do widget Telegram ï¿½ deve ser global
     function onTelegramAuth(user) {
+      var logoutFlag = sessionStorage.getItem('logoutTelegram');
+      if (logoutFlag) {
+        console.log('Login bloqueado apÃ³s logout');
+        return;
+      }
+
       var profilePicDiv = document.getElementById('telegramProfilePic');
       if (user.photo_url && profilePicDiv) {
         profilePicDiv.innerHTML = '';
@@ -108,17 +114,18 @@
       var overlay = document.createElement('div');
       overlay.id = 'modalLogoutMsg';
       overlay.className = 'fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-40';
-      overlay.innerHTML = '<div class="bg-white rounded-2xl shadow-2xl p-8 text-center animate-fade-in border-2 border-red-500"><span class="inline-block bg-red-500 rounded-full p-4 mb-4"><svg xmlns=\'http://www.w3.org/2000/svg\' class=\'h-8 w-8 text-white\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'currentColor\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M6 18L18 6M6 6l12 12\' /></svg></span><h2 class="text-2xl font-bold text-red-600 mb-2">Você foi deslogado!</h2><p class="text-gray-600 mb-6">Faça login novamente para acessar o painel.</p><button id="btnVoltarLogout" class="bg-blue-500 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-600 transition">Voltar e fazer login</button></div>';
+      overlay.innerHTML = '<div class="bg-white rounded-2xl shadow-2xl p-8 text-center animate-fade-in border-2 border-red-500"><span class="inline-block bg-red-500 rounded-full p-4 mb-4"><svg xmlns=\'http://www.w3.org/2000/svg\' class=\'h-8 w-8 text-white\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'currentColor\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M6 18L18 6M6 6l12 12\' /></svg></span><h2 class="text-2xl font-bold text-red-600 mb-2">Vocï¿½ foi deslogado!</h2><p class="text-gray-600 mb-6">Faï¿½a login novamente para acessar o painel.</p><button id="btnVoltarLogout" class="bg-blue-500 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-600 transition">Voltar e fazer login</button></div>';
       document.body.appendChild(overlay);
       document.getElementById('btnVoltarLogout').addEventListener('click', function() {
-        localStorage.removeItem('telegramUser');
         sessionStorage.removeItem('logoutTelegram');
-        overlay.remove();
+        localStorage.removeItem('telegramUser');
+        window.location.href = 'index.html';
       });
     }
 
-    // Verifica login automático antes do DOM carregar
+    // Verifica login automï¿½tico antes do DOM carregar
     (function() {
+      sessionStorage.removeItem('logoutTelegram');
       var user = localStorage.getItem('telegramUser');
       var logoutFlag = sessionStorage.getItem('logoutTelegram');
       if (user && !logoutFlag) {
@@ -126,7 +133,7 @@
       }
     })();
 
-    // Registra eventos após o DOM estar pronto
+    // Registra eventos apï¿½s o DOM estar pronto
     document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('btnEntrar').addEventListener('click', function() {
         document.getElementById('modalTelegram').classList.remove('hidden');
