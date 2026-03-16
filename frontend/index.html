@@ -50,17 +50,19 @@
               <div id="telegramProfilePic" class="flex justify-center mb-4">
                 <!-- A imagem será substituída pelo perfil real após login -->
               </div>
-              <!-- Telegram Login Widget -->
-              <script async src="https://telegram.org/js/telegram-widget.js?7"
-                data-telegram-login="MonitoraPromocoesBot"
-                data-size="large"
-                data-userpic="true"
-                data-radius="10"
-                data-request-access="write"
-                data-lang="pt"
-                data-on-auth="onTelegramAuth">
-              </script>
-              <button id="btnLogoutTelegram" class="w-full mt-4 bg-gradient-to-r from-red-500 to-red-700 text-white font-semibold px-6 py-3 rounded-lg shadow hover:scale-105 transition-transform duration-200">Deslogar do Telegram</button>
+              <!-- Botões de login e logout -->
+              <div id="telegramButtons" class="flex flex-col items-center w-full">
+                <script async src="https://telegram.org/js/telegram-widget.js?7"
+                  data-telegram-login="MonitoraPromocoesBot"
+                  data-size="large"
+                  data-userpic="true"
+                  data-radius="10"
+                  data-request-access="write"
+                  data-lang="pt"
+                  data-on-auth="onTelegramAuth">
+                </script>
+                <button id="btnLogoutTelegram" class="w-full mt-4 bg-gradient-to-r from-red-500 to-red-700 text-white font-semibold px-6 py-3 rounded-lg shadow hover:scale-105 transition-transform duration-200">Deslogar do Telegram</button>
+              </div>
             </div>
             <script>
               // Após autenticação, exibe imagem de perfil acima do botão
@@ -114,8 +116,27 @@
               // Limpa imagem de perfil e dados do usuário
               document.getElementById('telegramProfilePic').innerHTML = '';
               localStorage.removeItem('telegramUser');
+              sessionStorage.setItem('logoutTelegram', 'true');
               exibirMensagemLogout();
               document.getElementById('modalTelegram').classList.add('hidden');
+              // Remove widget Telegram e recarrega
+              const widget = document.querySelector('script[src*="telegram-widget.js"]');
+              if (widget) {
+                widget.remove();
+                setTimeout(() => {
+                  const newWidget = document.createElement('script');
+                  newWidget.async = true;
+                  newWidget.src = 'https://telegram.org/js/telegram-widget.js?7';
+                  newWidget.setAttribute('data-telegram-login', 'MonitoraPromocoesBot');
+                  newWidget.setAttribute('data-size', 'large');
+                  newWidget.setAttribute('data-userpic', 'true');
+                  newWidget.setAttribute('data-radius', '10');
+                  newWidget.setAttribute('data-request-access', 'write');
+                  newWidget.setAttribute('data-lang', 'pt');
+                  newWidget.setAttribute('data-on-auth', 'onTelegramAuth');
+                  document.getElementById('telegramProfilePic').parentNode.insertBefore(newWidget, document.getElementById('btnLogoutTelegram'));
+                }, 300);
+              }
             });
             // Ao abrir a página, verifica se está logado
             if (!sessionStorage.getItem('logoutTelegram')) {
