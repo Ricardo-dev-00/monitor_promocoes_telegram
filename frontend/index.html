@@ -134,13 +134,21 @@
 
     // Registra eventos após o DOM estar pronto
     document.addEventListener('DOMContentLoaded', function() {
-      document.getElementById('btnEntrar').addEventListener('click', function() {
-        document.getElementById('modalTelegram').classList.remove('hidden');
-      });
+      var btnEntrar = document.getElementById('btnEntrar');
+      if (btnEntrar) {
+        btnEntrar.addEventListener('click', function() {
+          var modal = document.getElementById('modalTelegram');
+          if (modal) modal.classList.remove('hidden');
+        });
+      }
 
-      document.getElementById('fecharModal').addEventListener('click', function() {
-        document.getElementById('modalTelegram').classList.add('hidden');
-      });
+      var fecharModal = document.getElementById('fecharModal');
+      if (fecharModal) {
+        fecharModal.addEventListener('click', function() {
+          var modal = document.getElementById('modalTelegram');
+          if (modal) modal.classList.add('hidden');
+        });
+      }
 
       var btnLogout = document.getElementById('btnLogoutTelegram');
       if (btnLogout) {
@@ -150,9 +158,6 @@
 
           localStorage.removeItem('telegramUser');
           sessionStorage.setItem('logoutTelegram', 'true');
-
-          var modal = document.getElementById('modalTelegram');
-          if (modal) modal.classList.add('hidden');
 
           exibirMensagemLogout();
         });
