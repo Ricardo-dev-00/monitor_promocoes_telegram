@@ -1,0 +1,24 @@
+{
+  "name": "monitora_promocoes",
+  "version": "1.0.0",
+  "description": "Micro-SaaS para monitoramento de promoções em grupos do Telegram.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "cd src && npm run start",
+    "start:dev": "cd src && npm run start:dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
+    "jsonwebtoken": "^9.0.3"
+  },
+  "devDependencies": {
+    "@nestjs/testing": "^11.1.16",
+    "@types/jest": "^30.0.0",
+    "jest": "^30.3.0",
+    "ts-jest": "^29.4.6"
+  }
+}

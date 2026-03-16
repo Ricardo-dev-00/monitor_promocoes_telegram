@@ -1,0 +1,10 @@
+# Teste de endpoint /telegram/search
+# Use com ferramentas como curl, Postman ou insira no frontend
+
+# Exemplo de requisição curl:
+# curl -X POST http://localhost:3000/telegram/search -H "Content-Type: application/json" -d '{"grupoId": "@nome_do_grupo", "keywords": ["promoção", "desconto", "oferta"]}'
+
+# Substitua @nome_do_grupo pelo username ou ID do grupo que deseja monitorar.
+# keywords pode ser qualquer lista de palavras.
+
+# O backend irá retornar as mensagens encontradas com as palavras-chave.

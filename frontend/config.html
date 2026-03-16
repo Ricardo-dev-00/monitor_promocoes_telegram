@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configuração - Monitora Promoções</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto p-8">
+    <h2 class="text-2xl font-bold mb-6 text-center">Configurar Grupos e Palavras-chave</h2>
+    <div class="bg-white shadow rounded p-6">
+      <form id="configForm" class="flex flex-col gap-4">
+        <input type="text" id="grupo" placeholder="Grupo do Telegram (@grupo ou ID)" class="border p-2 rounded">
+        <input type="text" id="keywords" placeholder="Palavras-chave (separadas por vírgula)" class="border p-2 rounded">
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Salvar Configuração</button>
+      </form>
+    </div>
+  </div>
+  <script src="main.js"></script>
+</body>
+</html>

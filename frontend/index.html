@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monitora Promoções</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+  <div class="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-blue-100 via-white to-blue-200">
+    <div class="bg-white shadow-2xl rounded-2xl p-10 w-full max-w-md flex flex-col items-center animate-fade-in">
+      <div class="mb-6">
+        <span class="inline-block bg-blue-500 rounded-full p-4 shadow-lg">
+          <svg width="100" height="100" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="100" r="90" fill="#0f172a"/>
+            <circle cx="100" cy="100" r="55" stroke="#38bdf8" stroke-width="4" fill="none" opacity="0.7"/>
+            <circle cx="100" cy="100" r="30" stroke="#38bdf8" stroke-width="3" fill="none" opacity="0.5"/>
+            <circle cx="100" cy="100" r="6" fill="#38bdf8"/>
+            <line x1="100" y1="100" x2="150" y2="75" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+            <text x="100" y="145" text-anchor="middle" font-size="28" fill="#22c55e" font-family="Arial, sans-serif">$
+            </text>
+            <text x="100" y="175" text-anchor="middle" font-size="14" fill="#e2e8f0" font-family="Arial, sans-serif">Promo Monitor
+            </text>
+          </svg>
+        </span>
+      </div>
+      <h1 class="text-4xl font-extrabold text-blue-700 mb-2 text-center drop-shadow">Monitora Promoções</h1>
+      <p class="text-gray-600 mb-6 text-center text-lg">Receba alertas automáticos de promoções nos grupos do Telegram.<br>Simples, seguro e eficiente!</p>
+      <button id="btnEntrar" class="bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold px-6 py-3 rounded-lg shadow hover:scale-105 transition-transform duration-200 mb-4">Entrar com Telegram</button>
+      <div class="w-full border-t border-gray-200 my-6"></div>
+      <ul class="text-gray-500 text-sm mb-2 list-disc pl-5">
+        <li>Monitoramento automático de promoções</li>
+        <li>Login seguro via Telegram</li>
+        <li>Interface intuitiva e responsiva</li>
+      </ul>
+      <!-- Modal Telegram Login -->
+      <div id="modalTelegram" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-2xl shadow-2xl p-10 w-96 text-center relative animate-fade-in">
+          <button id="fecharModal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-xl" title="Fechar">&times;</button>
+          <div class="mb-6">
+            <span class="inline-block bg-blue-500 rounded-full p-4 shadow-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8.5V6a5 5 0 00-10 0v2.5M5 8.5h14M5 8.5a2 2 0 00-2 2v7a2 2 0 002 2h14a2 2 0 002-2v-7a2 2 0 00-2-2" /></svg>
+            </span>
+          </div>
+          <h2 class="text-2xl font-extrabold text-blue-700 mb-2">Entrar com Telegram</h2>
+          <p class="text-gray-600 mb-6">Autentique-se com segurança e receba alertas de promoções!</p>
+          <div class="flex flex-col items-center mb-4">
+            <div class="flex flex-col w-full items-center">
+              <!-- Imagem de perfil Telegram (placeholder) -->
+              <div id="telegramProfilePic" class="flex justify-center mb-4">
+                <!-- A imagem será substituída pelo perfil real após login -->
+              </div>
+              <!-- Telegram Login Widget -->
+              <script async src="https://telegram.org/js/telegram-widget.js?7"
+                data-telegram-login="MonitoraPromocoesBot" 
+                data-size="large"
+                data-userpic="true"
+                data-radius="10"
+                data-request-access="write"
+                data-lang="pt"
+                data-on-auth="onTelegramAuth">
+              </script>
+              <button id="btnLogoutTelegram" class="w-full mt-4 bg-gradient-to-r from-red-500 to-red-700 text-white font-semibold px-6 py-3 rounded-lg shadow hover:scale-105 transition-transform duration-200">Deslogar do Telegram</button>
+            </div>
+            <script>
+              // Após autenticação, exibe imagem de perfil acima do botão
+              function onTelegramAuth(user) {
+                if (user.photo_url) {
+                  const pic = document.createElement('img');
+                  pic.src = user.photo_url;
+                  pic.alt = 'Foto de perfil Telegram';
+                  pic.className = 'rounded-full w-24 h-24 mx-auto border-4 border-blue-400 shadow-lg';
+                  const profilePicDiv = document.getElementById('telegramProfilePic');
+                  profilePicDiv.innerHTML = '';
+                  profilePicDiv.appendChild(pic);
+                }
+                // Salva usuário no localStorage
+                localStorage.setItem('telegramUser', JSON.stringify(user));
+                fetch('http://localhost:3000/telegram/connect', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(user)
+                })
+                .then(data => {
+                  document.getElementById('modalTelegram').classList.add('hidden');
+                  window.location.href = 'app.html';
+                });
+              }
+            </script>
+          </div>
+          <script>
+            function onTelegramAuth(user) {
+              fetch('http://localhost:3000/telegram/connect', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(user)
+              })
+              .then(data => {
+                document.getElementById('modalTelegram').classList.add('hidden');
+                window.location.href = 'app.html';
+              });
+            }
+            // Função global para exibir mensagem estilizada de logout
+            function exibirMensagemLogout() {
+              let modal = document.createElement('div');
+              modal.className = 'fixed inset-0 flex items-center justify-center z-50';
+              modal.innerHTML = `
+                <div class="bg-white rounded-2xl shadow-2xl p-8 text-center animate-fade-in border-2 border-red-500">
+                  <span class="inline-block bg-red-500 rounded-full p-4 mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                  </span>
+                  <h2 class="text-2xl font-bold text-red-600 mb-2">Você foi deslogado do Telegram!</h2>
+                  <p class="text-gray-600 mb-6">Faça login novamente para acessar o painel.</p>
+                  <button id="btnVoltarLogout" class="bg-blue-500 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-600 transition">Voltar para página inicial</button>
+                </div>
+              `;
+              document.body.appendChild(modal);
+              document.getElementById('btnVoltarLogout').addEventListener('click', function() {
+                window.location.href = 'index.html';
+              });
+            }
+            document.getElementById('btnLogoutTelegram')?.addEventListener('click', function() {
+              // Limpa imagem de perfil e dados do usuário
+              document.getElementById('telegramProfilePic').innerHTML = '';
+              localStorage.removeItem('telegramUser');
+              exibirMensagemLogout();
+              document.getElementById('modalTelegram').classList.add('hidden');
+                  <script>
+                    // Ao abrir a página, verifica se está logado
+                    const user = localStorage.getItem('telegramUser');
+                    if (user) {
+                      // Redireciona para app.html se já estiver logado
+                      window.location.href = 'app.html';
+                    }
+                  </script>
+            });
+          </script>
+        </div>
+      </div>
+    </div>
+    <style>
+      .animate-fade-in {
+        animation: fade-in 1s ease;
+      }
+      @keyframes fade-in {
+        0% { opacity: 0; transform: translateY(40px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
+    </style>
+  </div>
+  <script src="main.js"></script>
+</body>
+</html>
