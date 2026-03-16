@@ -9,8 +9,8 @@ async function exibirPromocoes() {
   const ul = document.getElementById('promocoes');
   if (ul) {
     ul.innerHTML = '';
-    // Requisição simulada ao backend
-    const resp = await fetch('http://localhost:3000/promocoes');
+    // Requisição ao backend Render
+    const resp = await fetch('https://monitor-promocoes-telegram.onrender.com/promocoes');
     const data = await resp.json();
     (data.promocoes || []).forEach(promo => {
       const li = document.createElement('li');
@@ -27,8 +27,8 @@ document.getElementById('configForm')?.addEventListener('submit', async function
   e.preventDefault();
   const grupo = document.getElementById('grupo').value;
   const keywords = document.getElementById('keywords').value.split(',').map(k => k.trim());
-  // Requisição simulada ao backend
-  const resp = await fetch('http://localhost:3000/config', {
+  // Requisição ao backend Render
+  const resp = await fetch('https://monitor-promocoes-telegram.onrender.com/config', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ grupo, keywords })
@@ -52,7 +52,7 @@ document.getElementById('telegramLogin')?.addEventListener('click', (e) => {
 document.getElementById('telegramLoginForm')?.addEventListener('submit', async function(e) {
   e.preventDefault();
   const telegramNumber = document.getElementById('telegramNumber').value;
-  const res = await fetch('http://localhost:3000/auth/telegram-login', {
+  const res = await fetch('https://monitor-promocoes-telegram.onrender.com/auth/telegram-login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ telegramNumber })

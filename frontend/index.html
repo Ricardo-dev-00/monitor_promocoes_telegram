@@ -76,7 +76,7 @@
                 }
                 // Salva usuário no localStorage
                 localStorage.setItem('telegramUser', JSON.stringify(user));
-                fetch('http://localhost:3000/telegram/connect', {
+                fetch('https://monitor-promocoes-telegram.onrender.com/telegram/connect', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify(user)
