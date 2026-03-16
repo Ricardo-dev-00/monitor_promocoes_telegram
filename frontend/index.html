@@ -125,7 +125,6 @@
 
     // Verifica login automático antes do DOM carregar
     (function() {
-      sessionStorage.removeItem('logoutTelegram');
       var user = localStorage.getItem('telegramUser');
       var logoutFlag = sessionStorage.getItem('logoutTelegram');
       if (user && !logoutFlag) {
