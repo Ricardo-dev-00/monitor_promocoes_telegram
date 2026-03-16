@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "start": "cd src && npm run start",
-    "start:dev": "cd src && npm run start:dev"
+    "start:dev": "cd src && npm run start:dev",
+    "build": "cd src && npm run build"
   },
   "keywords": [],
   "author": "",
