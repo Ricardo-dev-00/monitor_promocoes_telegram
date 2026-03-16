@@ -109,7 +109,7 @@
               document.getElementById('btnVoltarLogout').addEventListener('click', function() {
                 sessionStorage.removeItem('logoutTelegram');
                 localStorage.removeItem('telegramUser');
-                window.location.href = 'index.html';
+                window.location.href = window.location.origin + '/frontend/index.html';
               });
             }
             document.getElementById('btnLogoutTelegram')?.addEventListener('click', function() {
@@ -145,11 +145,10 @@
               }
             });
             // Ao abrir a página, verifica se está logado
-            if (!sessionStorage.getItem('logoutTelegram')) {
-              const user = localStorage.getItem('telegramUser');
-              if (user) {
-                window.location.href = 'app.html';
-              }
+            const user = localStorage.getItem('telegramUser');
+            const logoutFlag = sessionStorage.getItem('logoutTelegram');
+            if (user && !logoutFlag) {
+              window.location.href = 'app.html';
             }
             // Ao deslogar, marca sessão para impedir login automático
             document.getElementById('btnLogoutTelegram')?.addEventListener('click', function() {
