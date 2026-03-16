@@ -116,11 +116,26 @@
               document.getElementById('modalTelegram').classList.add('hidden');
             });
             // Ao abrir a página, verifica se está logado
-            const user = localStorage.getItem('telegramUser');
-            if (user) {
-              // Redireciona para app.html se já estiver logado
-              window.location.href = 'app.html';
+            if (!sessionStorage.getItem('logoutTelegram')) {
+              const user = localStorage.getItem('telegramUser');
+              if (user) {
+                window.location.href = 'app.html';
+              }
             }
+            // Ao deslogar, marca sessão para impedir login automático
+            document.getElementById('btnLogoutTelegram')?.addEventListener('click', function() {
+              document.getElementById('telegramProfilePic').innerHTML = '';
+              localStorage.removeItem('telegramUser');
+              sessionStorage.setItem('logoutTelegram', 'true');
+              exibirMensagemLogout();
+              document.getElementById('modalTelegram').classList.add('hidden');
+            });
+            // Ao voltar para página inicial, remove flag de logout
+            document.addEventListener('DOMContentLoaded', function() {
+              if (window.location.pathname.endsWith('index.html')) {
+                sessionStorage.removeItem('logoutTelegram');
+              }
+            });
           </script>
         </div>
       </div>
