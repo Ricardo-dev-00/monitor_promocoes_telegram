@@ -134,7 +134,13 @@
                   newWidget.setAttribute('data-request-access', 'write');
                   newWidget.setAttribute('data-lang', 'pt');
                   newWidget.setAttribute('data-on-auth', 'onTelegramAuth');
-                  document.getElementById('telegramProfilePic').parentNode.insertBefore(newWidget, document.getElementById('btnLogoutTelegram'));
+                  const telegramButtons = document.getElementById('telegramButtons');
+                  const btnLogout = document.getElementById('btnLogoutTelegram');
+                  if (telegramButtons && btnLogout) {
+                    telegramButtons.insertBefore(newWidget, btnLogout);
+                  } else if (telegramButtons) {
+                    telegramButtons.appendChild(newWidget);
+                  }
                 }, 300);
               }
             });
