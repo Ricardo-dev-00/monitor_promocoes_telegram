@@ -24,6 +24,12 @@ import { NotificationsModule } from '../modules/notifications/notifications.modu
       url: process.env.DATABASE_URL,
       autoLoadEntities: true,
       synchronize: true,
+      ssl: true,
+      extra: {
+        ssl: {
+          rejectUnauthorized: false
+        }
+      }
     }),
     AuthModule,
     GroupsModule,
