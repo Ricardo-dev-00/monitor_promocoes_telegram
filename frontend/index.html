@@ -129,11 +129,8 @@
 
     // Callback do widget Telegram - deve ser global
     function onTelegramAuth(user) {
-      var logoutFlag = sessionStorage.getItem('logoutTelegram');
-      if (logoutFlag) {
-        console.log('Login bloqueado após logout');
-        return;
-      }
+      // Se havia logout anterior, o novo auth do Telegram deve reativar o acesso.
+      sessionStorage.removeItem('logoutTelegram');
 
       var profilePicDiv = document.getElementById('telegramProfilePic');
       if (user.photo_url && profilePicDiv) {
@@ -182,11 +179,14 @@
       var btnEntrar = document.getElementById('btnEntrar');
       if (btnEntrar) {
         btnEntrar.addEventListener('click', function() {
+          // Ao tentar login novamente, libera explicitamente o fluxo do widget.
+          sessionStorage.removeItem('logoutTelegram');
+
           var nome = obterNomeExibicaoTelegram();
           var logoutFlag = sessionStorage.getItem('logoutTelegram');
 
           if (nome && !logoutFlag) {
-            window.location.href = 'app.html';
+            window.location.href = 'app.html?fromLogin=1';
             return;
           }
 
