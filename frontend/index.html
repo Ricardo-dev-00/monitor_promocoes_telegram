@@ -149,11 +149,19 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(user)
-      }).catch(function() {});
+      })
+        .catch(function() {})
+        .finally(function() {
+          // Apos autenticar no widget, entra direto no painel.
+          window.location.href = 'app.html?fromLogin=1';
+        });
 
       var modal = document.getElementById('modalTelegram');
       if (modal) modal.classList.add('hidden');
     }
+
+    // Garante callback global para o script do widget do Telegram.
+    window.onTelegramAuth = onTelegramAuth;
 
     // Exibe modal de deslogado (global)
     function exibirMensagemLogout() {
