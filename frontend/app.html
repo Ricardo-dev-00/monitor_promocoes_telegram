@@ -38,8 +38,10 @@
   </div>
   <script src="main.js"></script>
     <script>
+      const appQueryParams = new URLSearchParams(window.location.search);
+      const entrouPeloBotaoLogin = appQueryParams.get('fromLogin') === '1';
       const userGate = localStorage.getItem('telegramUser');
-      if (!userGate) {
+      if (!userGate && !entrouPeloBotaoLogin) {
         window.location.href = 'index.html';
       }
 
@@ -77,7 +79,7 @@
         }
         // Ao abrir a página, verifica se está logado
         const user = localStorage.getItem('telegramUser');
-        if (!user) {
+        if (!user && !entrouPeloBotaoLogin) {
           window.location.href = 'index.html';
         }
       });
