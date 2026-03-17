@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { Group } from './group.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -11,7 +11,14 @@ export class GroupController {
   ) {}
 
   @Get()
-  async findAll(): Promise<Group[]> {
-    return this.groupRepository.find();
+  async findAll(@Query('userId') userId?: string): Promise<Group[]> {
+    if (userId) {
+      return this.groupRepository.find({
+        where: { user: { id: Number(userId) } },
+        relations: ['user'],
+      });
+    }
+
+    return this.groupRepository.find({ relations: ['user'] });
   }
 }

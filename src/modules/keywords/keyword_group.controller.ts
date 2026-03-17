@@ -1,7 +1,5 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { KeywordGroup } from './keyword_group.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { KeywordGroupService } from './keyword_group.service';
 
 @Controller('keyword-groups')
@@ -14,7 +12,9 @@ export class KeywordGroupController {
   }
 
   @Post()
-  async create(@Body() data: Partial<KeywordGroup>): Promise<KeywordGroup> {
+  async create(
+    @Body() data: { keywordId: number; groupId: number },
+  ): Promise<KeywordGroup> {
     return this.keywordGroupService.create(data);
   }
 }

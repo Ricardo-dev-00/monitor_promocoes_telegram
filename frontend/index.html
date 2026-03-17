@@ -85,6 +85,35 @@
   </style>
 
   <script>
+    function obterNomeExibicaoTelegram() {
+      var userRaw = localStorage.getItem('telegramUser');
+      if (!userRaw) return null;
+
+      try {
+        var user = JSON.parse(userRaw);
+        if (user.username) return user.username;
+        if (user.first_name) return user.first_name;
+      } catch (e) {
+        return null;
+      }
+
+      return null;
+    }
+
+    function atualizarBotaoEntrar() {
+      var btnEntrar = document.getElementById('btnEntrar');
+      if (!btnEntrar) return;
+
+      var logoutFlag = sessionStorage.getItem('logoutTelegram');
+      var nome = obterNomeExibicaoTelegram();
+
+      if (nome && !logoutFlag) {
+        btnEntrar.innerHTML = '<span>Entrar como "' + nome + '"</span>';
+      } else {
+        btnEntrar.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5" aria-hidden="true'><path d="M9.04 15.54l-.38 5.35c.55 0 .79-.24 1.08-.53l2.59-2.48 5.36 3.93c.98.54 1.67.26 1.93-.91L23.1 4.5c.34-1.56-.56-2.17-1.51-1.82L1.8 10.3c-1.5.58-1.48 1.41-.25 1.79l5.06 1.58L18.36 6.4c.55-.36 1.05-.16.64.2"/></svg><span>Entrar com Telegram</span>';
+      }
+    }
+
     function atualizarVisibilidadeLogout() {
       var btnLogout = document.getElementById('btnLogoutTelegram');
       if (!btnLogout) return;
@@ -116,14 +145,17 @@
         profilePicDiv.appendChild(pic);
       }
       localStorage.setItem('telegramUser', JSON.stringify(user));
+      sessionStorage.removeItem('logoutTelegram');
       atualizarVisibilidadeLogout();
+      atualizarBotaoEntrar();
       fetch('https://monitor-promocoes-telegram.onrender.com/telegram/connect', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(user)
-      }).catch(function() {}).finally(function() {
-        window.location.href = 'app.html';
-      });
+      }).catch(function() {});
+
+      var modal = document.getElementById('modalTelegram');
+      if (modal) modal.classList.add('hidden');
     }
 
     // Exibe modal de deslogado (global)
@@ -142,22 +174,22 @@
       });
     }
 
-    // Verifica login automático antes do DOM carregar
-    (function() {
-      var user = localStorage.getItem('telegramUser');
-      var logoutFlag = sessionStorage.getItem('logoutTelegram');
-      if (user && !logoutFlag) {
-        window.location.href = 'app.html';
-      }
-    })();
-
     // Registra eventos após o DOM estar pronto
     document.addEventListener('DOMContentLoaded', function() {
       atualizarVisibilidadeLogout();
+      atualizarBotaoEntrar();
 
       var btnEntrar = document.getElementById('btnEntrar');
       if (btnEntrar) {
         btnEntrar.addEventListener('click', function() {
+          var nome = obterNomeExibicaoTelegram();
+          var logoutFlag = sessionStorage.getItem('logoutTelegram');
+
+          if (nome && !logoutFlag) {
+            window.location.href = 'app.html';
+            return;
+          }
+
           var modal = document.getElementById('modalTelegram');
           if (modal) modal.classList.remove('hidden');
         });
@@ -180,6 +212,7 @@
           localStorage.removeItem('telegramUser');
           sessionStorage.setItem('logoutTelegram', 'true');
           atualizarVisibilidadeLogout();
+          atualizarBotaoEntrar();
 
           exibirMensagemLogout();
         });
